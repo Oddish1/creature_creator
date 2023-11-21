@@ -1,0 +1,1 @@
+// Purpose: To manage the interactions between creatures, other creatures, and their environment.

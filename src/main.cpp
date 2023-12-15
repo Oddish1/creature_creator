@@ -1,26 +1,46 @@
 // User prompted to provide two creatures
 
-// Generate new creature from parents' stats, some mutation
+// Generate new creature from parents' stats
 
-// Two modes;
-  // basic - generate new creature from combination of parents (excludes mutation)
-  // evolution - user gives parents and generation number, outputs an evolved animal (includes mutation) (implement genetic algorithm?)
-
-
-#include <thread>
-#include <mutex>
-#include <condition_variable>
+#include <curses.h>
 #include <random>
-#include <queue>
 #include <vector>
 #include <string>
-#include <chrono>
 #include <iostream>
-#include <SFML/Graphics.hpp>
 
-int Y_RESOLUTION;
-int X_RESOLUTION;
 
-std::mt19937 engine{ std::random_device{}() };
-std::uniform_int_distribution<int> dist(1, 1000000);
+
+
+
+void asciiArt()
+{
+std::cout << "\n\n\n\n\n\n" << std::endl;
+std::cout << "                _____" << std::endl;
+std::cout << "             ,-'     '-." << std::endl;
+std::cout << "            / o       o \\         ________________________" << std::endl;
+std::cout << "           /   \\     /   \\       /  Just here to deliver \\" << std::endl;
+std::cout << "          /     )-'-(     \\    <<    your new creature.  |" << std::endl;
+std::cout << "         /     ( 6 6 )     \\     \\   Probe ya' later!    /" << std::endl;
+std::cout << "        /       \\ ' /       \\     \\_____________________/" << std::endl;
+std::cout << "       /         )=(         \\" << std::endl;
+std::cout << "      /   o   .--'-'--.   o   \\" << std::endl;
+std::cout << "     /    I  /  -   -  \\  I    \\" << std::endl;
+std::cout << " .--(    (_}y/\\       /\\y{_)    )--." << std::endl;
+std::cout << "(    '.___l\\/__\\_____/__\\/l___,'    )" << std::endl;
+std::cout << " \\                                 /" << std::endl;
+std::cout << "  '-._      o O o O o O o      _,-'" << std::endl;
+std::cout << "      `--Y--.___________.--Y--'" << std::endl;
+std::cout << "         |==.___________.==| " << std::endl;
+std::cout << "         '==.___________.=='" << std::endl;
+std::cout << "\n\n\n\n\n\n" << std::endl;
+}
+
+
+
+int main()
+{
+  asciiArt();
+
+  return 0;
+}
 

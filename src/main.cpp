@@ -9,7 +9,130 @@
 #include <iostream>
 
 
+class Creature
+{
+private:
+  std::string species;
+  std::string name;
+  double age;
+  double height;
+  double weight;
+  std::vector<std::string> likedFoods;
+  std::vector<std::string> dislikedFoods;
+  int numLegs;
+  bool hasTail;
 
+public:
+  std::string getSpecies()
+  {
+    return species;
+  }
+  void setSpecies(std::string p_species)
+  {
+    species = p_species;
+  }
+
+  std::string getName()
+  {
+    return name;
+  }
+  void setName(std::string p_name)
+  {
+    name = p_name;
+  }
+
+  double getAge()
+  {
+    return age;
+  }
+  void setAge(double p_age)
+  {
+    age = p_age;
+  }
+
+  double getHeight()
+  {
+    return height;
+  }
+  void setHeight(double p_height)
+  {
+    height = p_height;
+  }
+
+  double getWeight()
+  {
+    return weight;
+  }
+  void setWeight(double p_weight)
+  {
+    weight = p_weight;
+  }
+
+  double getLikedFoods()
+  {
+    return likedFoods;
+  }
+  void setLikedFoods(std::vector<std::string> p_likedFoods)
+  {
+    likedFoods = p_likedFoods;
+  }
+  void addLikedFoods(std::string p_food)
+  {
+    likedFoods.push_back(p_food);
+  }
+  void removeLikedFoods(std::string p_food)
+  {
+    for (int i, i < sizeof(likedFoods), ++i)
+    {
+      if (likedFoods[i] == p_food)
+      {
+        likedFoods.erase(i);
+      }
+    }
+  }
+
+  double getDislikedFoods()
+  {
+    return dislikedFoods;
+  }
+  void setDislikedFoods(std::vector<std::string> p_dislikedFoods)
+  {
+    dislikedFoods = p_dislikedFoods;
+  }
+  void addDislikedFoods(std::string p_food)
+  {
+    dislikedFoods.push_back(p_food);
+  }
+  void removeDislikedFoods(std::string p_food)
+  {
+    for (int i, i < sizeof(dislikedFoods), ++i)
+    {
+      if (dislikedFoods[i] == p_food)
+      {
+        dislikedFoods.erase(i);
+      }
+    }
+  }
+
+  int getNumLegs()
+  {
+    return numLegs;
+  }
+  void setNumLegs(int p_numLegs)
+  {
+    numLegs = p_numLegs;
+  }
+
+  bool getHasTail()
+  {
+    return hasTail;
+  }
+  void setHasTail(bool p_hasTail)
+  {
+    hasTail = p_hasTail;
+  }
+
+};
 
 
 void asciiArt()

@@ -1,1 +1,0 @@
-// Purpose: To model the physical world in which the creatures live. Includes geographical features, climate, vegitation, etc.

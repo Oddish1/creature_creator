@@ -1,1 +1,0 @@
-// Purpose: To track and manage the population of a particular species or group of creatures.

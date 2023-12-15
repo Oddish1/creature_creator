@@ -1,1 +1,0 @@
-// Purpose: To model the climate of different areas within the environment.

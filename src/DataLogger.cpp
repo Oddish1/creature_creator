@@ -1,1 +1,0 @@
-// Purpose: To collect and store data from the simulation for analysis.

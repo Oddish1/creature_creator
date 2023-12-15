@@ -1,1 +1,0 @@
-// Purpose: To represent resources that creatures might compete for or depend on.

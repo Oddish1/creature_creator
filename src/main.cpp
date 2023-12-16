@@ -82,7 +82,7 @@ public:
   }
   void removeLikedFoods(std::string p_food)
   {
-    for (int i, i < sizeof(likedFoods), ++i)
+    for (int i, i < likedFoods.size(), ++i)
     {
       if (likedFoods[i] == p_food)
       {
@@ -105,7 +105,7 @@ public:
   }
   void removeDislikedFoods(std::string p_food)
   {
-    for (int i, i < sizeof(dislikedFoods), ++i)
+    for (int i, i < dislikedFoods.size(), ++i)
     {
       if (dislikedFoods[i] == p_food)
       {
@@ -130,6 +130,31 @@ public:
   void setHasTail(bool p_hasTail)
   {
     hasTail = p_hasTail;
+  }
+
+  void display()
+  {
+    std::cout << "\n\nSpecies: " << species << std::endl;
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Age: " << age << std::endl;
+    std::cout << "Height" << height << std::endl;
+    std::cout << "Weight" << weight << std::endl;
+    std::cout << "Number of Legs: " << numLegs << std::endl;
+    std::cout << "Tail: ";
+    if (hasTail)
+      std::cout << "Yes" << std::endl;
+    else
+      std::cout << "No" << std::endl;
+    std::cout << "Liked Foods: " << std::endl;
+    for (int i; i < likedFoods.size(); ++i)
+    {
+      std::cout << "\t- " << likedFoods[i] << std::endl;
+    }
+    std::cout << "Disliked Foods: " << std::endl;
+    for (int i; i < dislikedFoods.size(); ++i)
+    {
+      std::cout << "\t- " << dislikedFoods[i] << std::endl;
+    }
   }
 
 };

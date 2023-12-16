@@ -8,6 +8,11 @@
 #include <iostream>
 
 
+std::random_device rd; // obtain random number from hardware
+std::mt19937 gen(rd()); // seed the generator
+std::uniform_real_distribution<> distA(0,1); // define distribution range 0-1
+
+
 class Creature
 {
 private:
@@ -22,7 +27,7 @@ private:
   bool hasTail;
 
 public:
-  std::string getSpecies()
+  const std::string& getSpecies()
   {
     return species;
   }
@@ -31,7 +36,7 @@ public:
     species = p_species;
   }
 
-  std::string getName()
+  const std::string& getName()
   {
     return name;
   }
@@ -40,7 +45,7 @@ public:
     name = p_name;
   }
 
-  double getAge()
+  const double getAge()
   {
     return age;
   }
@@ -49,7 +54,7 @@ public:
     age = p_age;
   }
 
-  double getHeight()
+  const double getHeight()
   {
     return height;
   }
@@ -58,7 +63,7 @@ public:
     height = p_height;
   }
 
-  double getWeight()
+  const double getWeight()
   {
     return weight;
   }
@@ -67,41 +72,41 @@ public:
     weight = p_weight;
   }
 
-  std::vector<std::string> getLikedFoods()
+  const std::vector<std::string>& getLikedFoods()
   {
     return likedFoods;
   }
-  void setLikedFoods(std::vector<std::string> p_likedFoods)
+  void setLikedFoods(const std::vector<std::string>& p_likedFoods)
   {
     likedFoods = p_likedFoods;
   }
-  void addLikedFoods(std::string p_food)
+  void addLikedFoods(const std::string& p_food)
   {
     likedFoods.push_back(p_food);
   }
-  void removeLikedFoods(std::string p_food)
+  void removeLikedFoods(const std::string& p_food)
   {
     std::erase(likedFoods, p_food);
   }
 
-  std::vector<std::string> getDislikedFoods()
+  const std::vector<std::string>& getDislikedFoods()
   {
     return dislikedFoods;
   }
-  void setDislikedFoods(std::vector<std::string> p_dislikedFoods)
+  void setDislikedFoods(const std::vector<std::string>& p_dislikedFoods)
   {
     dislikedFoods = p_dislikedFoods;
   }
-  void addDislikedFoods(std::string p_food)
+  void addDislikedFoods(const std::string& p_food)
   {
     dislikedFoods.push_back(p_food);
   }
-  void removeDislikedFoods(std::string p_food)
+  void removeDislikedFoods(const std::string& p_food)
   {
     std::erase(dislikedFoods, p_food);
   }
 
-  int getNumLegs()
+  const int getNumLegs()
   {
     return numLegs;
   }
@@ -110,7 +115,7 @@ public:
     numLegs = p_numLegs;
   }
 
-  bool getHasTail()
+  const bool getHasTail()
   {
     return hasTail;
   }
@@ -124,8 +129,8 @@ public:
     std::cout << "\n\nSpecies: " << species << std::endl;
     std::cout << "Name: " << name << std::endl;
     std::cout << "Age: " << age << std::endl;
-    std::cout << "Height" << height << std::endl;
-    std::cout << "Weight" << weight << std::endl;
+    std::cout << "Height: " << height << std::endl;
+    std::cout << "Weight: " << weight << std::endl;
     std::cout << "Number of Legs: " << numLegs << std::endl;
     std::cout << "Tail: ";
     if (hasTail)
@@ -133,12 +138,12 @@ public:
     else
       std::cout << "No" << std::endl;
     std::cout << "Liked Foods: " << std::endl;
-    for (int i; i < likedFoods.size(); ++i)
+    for (int i=0; i < likedFoods.size(); ++i)
     {
       std::cout << "\t- " << likedFoods[i] << std::endl;
     }
     std::cout << "Disliked Foods: " << std::endl;
-    for (int i; i < dislikedFoods.size(); ++i)
+    for (int i=0; i < dislikedFoods.size(); ++i)
     {
       std::cout << "\t- " << dislikedFoods[i] << std::endl;
     }
@@ -170,6 +175,57 @@ std::cout << "         '==.___________.=='" << std::endl;
 std::cout << "\n\n\n\n\n\n" << std::endl;
 }
 
+
+std::string combineSpecies(const std::string& speciesA, const std::string& speciesB)
+{
+  int midA = speciesA.size() / 2;
+  int midB = speciesB.size() / 2;
+  std::string combined = speciesA.substr(0, mid1) + speciesB.substr(mid2);
+  return combined;
+}
+
+
+std::vector<std::string> combineFoods(const std::vector<std::string>& foodsA, const std::vector<std::string>& foodsB)
+{
+  std::vector<std::string> combinedFoods;
+  len = foodsA.size(), foodsB.size();
+  int choice;
+
+  for (int i=0; i<len; ++i)
+  {
+    choice = distA(gen)
+    if (choice == 0 && foodsA.size() >= i)
+      combinedFoods.push_back(foodsA[i]);
+    else if (choice == 0 && foodsA.size() < i)
+      combinedFoods.push_back(foodsB[i]);
+    else if (choice == 1 && foodsB.size() >= i)
+      combinedFoods.push_back(foodsB[i]);
+    else
+      combinedFoods.push_back(foodsA[i]);
+  }
+
+  return combinedFoods;
+}
+
+
+Creature makeChild(Creature* parentA, Creature* parentB, const std::string& p_childName)
+{
+  if (parentA == nullptr || parentB == nullptr)
+    throw std::invalid_argument("Parent pointers must not be null.");
+
+  Creature child;
+  child.setSpecies(combineSpecies(parentA->getSpecies(), parentB->getSpecies()));
+  child.setName(p_childName);
+  child.setAge(0.1);
+  child.setHeight((parentA->getHeight() + parentB->getHeight()) / 2);
+  child.setWeight((parentA->getWeight() + parentB->getWeight()) / 2);
+  child.setLikedFoods(combineFoods(parentA->getLikedFoods(), parentB->getLikedFoods()));
+  child.setDislikedFoods(combineFoods(parentB->getDislikedFoods(), parentB->getDislikedFoods()));
+  child.setNumLegs((parentA->getNumLegs() + parentB->getNumLegs()) / 2);
+  child.setHasTail(parentA->getHasTail() || parentB->getHasTail());
+
+  return child;
+}
 
 
 int main()

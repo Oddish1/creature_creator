@@ -2,7 +2,6 @@
 
 // Generate new creature from parents' stats
 
-#include <curses.h>
 #include <random>
 #include <vector>
 #include <string>
@@ -68,7 +67,7 @@ public:
     weight = p_weight;
   }
 
-  double getLikedFoods()
+  std::vector<std::string> getLikedFoods()
   {
     return likedFoods;
   }
@@ -82,16 +81,10 @@ public:
   }
   void removeLikedFoods(std::string p_food)
   {
-    for (int i, i < likedFoods.size(), ++i)
-    {
-      if (likedFoods[i] == p_food)
-      {
-        likedFoods.erase(i);
-      }
-    }
+    std::erase(likedFoods, p_food);
   }
 
-  double getDislikedFoods()
+  std::vector<std::string> getDislikedFoods()
   {
     return dislikedFoods;
   }
@@ -105,13 +98,7 @@ public:
   }
   void removeDislikedFoods(std::string p_food)
   {
-    for (int i, i < dislikedFoods.size(), ++i)
-    {
-      if (dislikedFoods[i] == p_food)
-      {
-        dislikedFoods.erase(i);
-      }
-    }
+    std::erase(dislikedFoods, p_food);
   }
 
   int getNumLegs()

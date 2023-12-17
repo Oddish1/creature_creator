@@ -1,7 +1,3 @@
-// User prompted to provide two creatures
-
-// Generate new creature from parents' stats
-
 #include <random>
 #include <vector>
 #include <string>
@@ -17,17 +13,18 @@ std::uniform_real_distribution<> distA(0,1); // define distribution range 0-1
 class Creature
 {
 private:
-  std::string species;
-  std::string name;
-  double age;
-  double height;
-  double weight;
-  std::vector<std::string> likedFoods;
-  std::vector<std::string> dislikedFoods;
-  int numLegs;
-  bool hasTail;
+  std::string species; // species name (elephant/dog/cat/etc.)
+  std::string name; // name of the creature (Dave, Dwayne, Chris, Rosie, etc.)
+  double age; // age in years
+  double height; // height in centimeters
+  double weight; // weight in kilograms
+  std::vector<std::string> likedFoods; // vector of liked foods (strings)
+  std::vector<std::string> dislikedFoods; // vector of disliked foods (strings)
+  int numLegs; // number of legs (4)
+  bool hasTail; // true = has tail, false = doesn't have tail
 
 public:
+  // Getter and setter methods for all attributes
   const std::string& getSpecies()
   {
     return species;
@@ -81,10 +78,12 @@ public:
   {
     likedFoods = p_likedFoods;
   }
+  // adds food to the end of the vector
   void addLikedFoods(const std::string& p_food)
   {
     likedFoods.push_back(p_food);
   }
+  // finds food we want to remove and removes it from the vector
   void removeLikedFoods(const std::string& p_food)
   {
     likedFoods.erase(std::remove(likedFoods.begin(), likedFoods.end(), p_food), likedFoods.end());
@@ -98,10 +97,12 @@ public:
   {
     dislikedFoods = p_dislikedFoods;
   }
+  // adds food to the end of the vector
   void addDislikedFoods(const std::string& p_food)
   {
     dislikedFoods.push_back(p_food);
   }
+  // finds food we want to remove and removes it from the vector
   void removeDislikedFoods(std::string p_food)
   {
     dislikedFoods.erase(std::remove(dislikedFoods.begin(), dislikedFoods.end(), p_food), dislikedFoods.end());
@@ -125,6 +126,7 @@ public:
     hasTail = p_hasTail;
   }
 
+  // Basic display of all creature attributes.
   void display()
   {
     std::cout << "\n\nSpecies: " << species << std::endl;
@@ -139,11 +141,13 @@ public:
     else
       std::cout << "No" << std::endl;
     std::cout << "Liked Foods: " << std::endl;
+    // loops through array and prints each element
     for (int i=0; i < likedFoods.size(); ++i)
     {
       std::cout << "\t- " << likedFoods[i] << std::endl;
     }
     std::cout << "Disliked Foods: " << std::endl;
+    // loops through array and prints each element
     for (int i=0; i < dislikedFoods.size(); ++i)
     {
       std::cout << "\t- " << dislikedFoods[i] << std::endl;
@@ -153,6 +157,7 @@ public:
 };
 
 
+// ASCII Art to print showing child is created.
 void asciiArt()
 {
 std::cout << "\n\n\n\n\n\n" << std::endl;
@@ -177,6 +182,7 @@ std::cout << "\n\n\n\n\n\n" << std::endl;
 }
 
 
+// takes two species strings and returns one string of the combination of inputs
 std::string combineSpecies(const std::string& speciesA, const std::string& speciesB)
 {
   int midA = speciesA.size() / 2;
@@ -186,6 +192,7 @@ std::string combineSpecies(const std::string& speciesA, const std::string& speci
 }
 
 
+// takes two vectors and randomly combines the elements of each into a new vector that is returned
 std::vector<std::string> combineFoods(const std::vector<std::string>& foodsA, const std::vector<std::string>& foodsB)
 {
   std::vector<std::string> combinedFoods;
@@ -209,6 +216,7 @@ std::vector<std::string> combineFoods(const std::vector<std::string>& foodsA, co
 }
 
 
+// takes pointers to two parents and the name of the child and returns the child (attributes are combinations of the parents)
 Creature makeChild(Creature* parentA, Creature* parentB, const std::string& p_childName)
 {
   if (parentA == nullptr || parentB == nullptr)
@@ -231,6 +239,7 @@ Creature makeChild(Creature* parentA, Creature* parentB, const std::string& p_ch
 
 int main()
 {
+  // placeholder variables until the parent creatures attributes are set
   std::string speciesA, speciesB, nameA, nameB;
   double ageA, ageB, heightA, heightB, weightA, weightB;
   std::vector<std::string> likedFoodsA, likedFoodsB, dislikedFoodsA, dislikedFoodsB;
@@ -242,6 +251,8 @@ int main()
 
   std::string input;
   std::cout << "Welcome to the Creature Creator!\n\nYou will need to provide information about two parent creatures before we can get started creating your new creature..." << std::endl;
+
+  // Parent A information collection
   std::cout << "\nPlease enter information below for Parent A..." << std::endl;
   std::cout << "What is the species of this creature?: ";
   std::getline(std::cin, speciesA);
@@ -296,6 +307,7 @@ int main()
   }
   std::cout << "\n";
 
+  // Parent B information collection
   std::cout << "\nAlmost there, please enter information below for Parent B..." << std::endl;
   std::cout << "\n";
   std::cout << "What is the species of this creature?: ";
@@ -351,6 +363,7 @@ int main()
   }
   std::cout << "\n";
 
+  // set all attributes of both parents from given inputs
   parentA.setSpecies(speciesA);
   parentA.setName(nameA);
   parentA.setAge(ageA);
@@ -371,6 +384,7 @@ int main()
   parentB.setNumLegs(numLegsB);
   parentB.setHasTail(hasTailB);
 
+  // pointers to the parent objects
   Creature* ptrA = &parentA;
   Creature* ptrB = &parentB;
 
@@ -379,19 +393,22 @@ int main()
   std::getline(std::cin, childName);
   std::cout << "\n";
 
+  // create the child from the two parents and user defined name
   Creature child = makeChild(ptrA, ptrB, childName);
 
+  // display art to show we are done
   asciiArt();
 
+  // display the information for the parents and child
   std::cout << "\nBelow is the information for both parents, and the child...\n" << std::endl;
   parentA.display();
   std::cout << "\n";
   parentB.display();
   std::cout << "\n";
   child.display();
-  std::cout << "\n";
 
 
   return 0;
 }
+
 

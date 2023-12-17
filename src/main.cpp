@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 
 std::random_device rd; // obtain random number from hardware
@@ -86,7 +87,7 @@ public:
   }
   void removeLikedFoods(const std::string& p_food)
   {
-    std::erase(likedFoods, p_food);
+    likedFoods.erase(std::remove(likedFoods.begin(), likedFoods.end(), p_food), likedFoods.end());
   }
 
   const std::vector<std::string>& getDislikedFoods()
@@ -101,9 +102,9 @@ public:
   {
     dislikedFoods.push_back(p_food);
   }
-  void removeDislikedFoods(const std::string& p_food)
+  void removeDislikedFoods(std::string p_food)
   {
-    std::erase(dislikedFoods, p_food);
+    dislikedFoods.erase(std::remove(dislikedFoods.begin(), dislikedFoods.end(), p_food), dislikedFoods.end());
   }
 
   const int getNumLegs()
@@ -128,9 +129,9 @@ public:
   {
     std::cout << "\n\nSpecies: " << species << std::endl;
     std::cout << "Name: " << name << std::endl;
-    std::cout << "Age: " << age << std::endl;
-    std::cout << "Height: " << height << std::endl;
-    std::cout << "Weight: " << weight << std::endl;
+    std::cout << "Age: " << age << " years" << std::endl;
+    std::cout << "Height: " << height << "cm" << std::endl;
+    std::cout << "Weight: " << weight << "kg" << std::endl;
     std::cout << "Number of Legs: " << numLegs << std::endl;
     std::cout << "Tail: ";
     if (hasTail)
@@ -180,7 +181,7 @@ std::string combineSpecies(const std::string& speciesA, const std::string& speci
 {
   int midA = speciesA.size() / 2;
   int midB = speciesB.size() / 2;
-  std::string combined = speciesA.substr(0, mid1) + speciesB.substr(mid2);
+  std::string combined = speciesA.substr(0, midA) + speciesB.substr(midB);
   return combined;
 }
 
@@ -188,17 +189,17 @@ std::string combineSpecies(const std::string& speciesA, const std::string& speci
 std::vector<std::string> combineFoods(const std::vector<std::string>& foodsA, const std::vector<std::string>& foodsB)
 {
   std::vector<std::string> combinedFoods;
-  len = foodsA.size(), foodsB.size();
-  int choice;
+  int len = std::min(foodsA.size(), foodsB.size());
+  double choice;
 
   for (int i=0; i<len; ++i)
   {
-    choice = distA(gen)
-    if (choice == 0 && foodsA.size() >= i)
+    choice = distA(gen);
+    if (choice < 0.5 && foodsA.size() > i)
       combinedFoods.push_back(foodsA[i]);
-    else if (choice == 0 && foodsA.size() < i)
+    else if (choice < 0.5 && foodsA.size() < i)
       combinedFoods.push_back(foodsB[i]);
-    else if (choice == 1 && foodsB.size() >= i)
+    else if (choice >= 0.5 && foodsB.size() > i)
       combinedFoods.push_back(foodsB[i]);
     else
       combinedFoods.push_back(foodsA[i]);
@@ -230,7 +231,166 @@ Creature makeChild(Creature* parentA, Creature* parentB, const std::string& p_ch
 
 int main()
 {
+  std::string speciesA, speciesB, nameA, nameB;
+  double ageA, ageB, heightA, heightB, weightA, weightB;
+  std::vector<std::string> likedFoodsA, likedFoodsB, dislikedFoodsA, dislikedFoodsB;
+  int numLegsA, numLegsB;
+  bool hasTailA, hasTailB;
+
+  Creature parentA;
+  Creature parentB;
+
+  std::string input;
+  std::cout << "Welcome to the Creature Creator!\n\nYou will need to provide information about two parent creatures before we can get started creating your new creature..." << std::endl;
+  std::cout << "\nPlease enter information below for Parent A..." << std::endl;
+  std::cout << "What is the species of this creature?: ";
+  std::getline(std::cin, speciesA);
+  std::cout << "\n";
+  std::cout << "What is the pet-name you would like to give this creature?: ";
+  std::getline(std::cin, nameA);
+  std::cout << "\n";
+  std::cout << "What is this creature's age? (years): ";
+  std::getline(std::cin, input);
+  ageA = std::stod(input);
+  std::cout << "\n";
+  std::cout << "What is this creature's height? (centimeters): ";
+  std::getline(std::cin, input);
+  heightA = std::stod(input);
+  std::cout << "\n";
+  std::cout << "What is this creature's weight? (kilograms): ";
+  std::getline(std::cin, input);
+  weightA = std::stod(input);
+  std::cout << "\n";
+  std::cout << "What things does this creature like to eat? Type 'done' to finish:" << std::endl;
+  while(true)
+  {
+    std::getline(std::cin, input);
+    if (input == "done")
+      break;
+    likedFoodsA.push_back(input);
+  }
+  std::cout << "\n";
+  std::cout << "What things does this creature not like eating? Type 'done' to finish:" << std::endl;
+  while(true)
+  {
+    std::getline(std::cin, input);
+    if(input == "done")
+      break;
+    dislikedFoodsA.push_back(input);
+  }
+  std::cout << "\n";
+  std::cout << "How many legs does this creature have?: ";
+  std::getline(std::cin, input);
+  numLegsA = std::stoi(input);
+  std::cout << "\n";
+  std::cout << "Does this creature have a tail? [yes/no]: ";
+  std::getline(std::cin, input);
+  if(input == "yes")
+    hasTailA = true;
+  else if (input == "no")
+    hasTailA = false;
+  else
+  {
+    std::cout << "\nInvalid input, defaulting to 'no'.";
+    hasTailA = false;
+  }
+  std::cout << "\n";
+
+  std::cout << "\nAlmost there, please enter information below for Parent B..." << std::endl;
+  std::cout << "\n";
+  std::cout << "What is the species of this creature?: ";
+  std::getline(std::cin, speciesB);
+  std::cout << "\n";
+  std::cout << "What is the pet-name you would like to give this creature?: ";
+  std::getline(std::cin, nameB);
+  std::cout << "\n";
+  std::cout << "What is this creature's age? (years): ";
+  std::getline(std::cin, input);
+  ageB = std::stod(input);
+  std::cout << "\n";
+  std::cout << "What is this creature's height? (centimeters): ";
+  std::getline(std::cin, input);
+  heightB = std::stod(input);
+  std::cout << "\n";
+  std::cout << "What is this creature's weight? (kilograms): ";
+  std::getline(std::cin, input);
+  weightB = std::stod(input);
+  std::cout << "\n";
+  std::cout << "What things does this creature like to eat? Type 'done' to finish:" << std::endl;
+  while(true)
+  {
+    std::getline(std::cin, input);
+    if (input == "done")
+      break;
+    likedFoodsB.push_back(input);
+  }
+  std::cout << "\n";
+  std::cout << "What things does this creature not like eating? Type 'done' to finish:" << std::endl;
+  while(true)
+  {
+    std::getline(std::cin, input);
+    if(input == "done")
+      break;
+    dislikedFoodsB.push_back(input);
+  }
+  std::cout << "\n";
+  std::cout << "How many legs does this creature have?: ";
+  std::getline(std::cin, input);
+  numLegsB = std::stoi(input);
+  std::cout << "\n";
+  std::cout << "Does this creature have a tail? [yes/no]: ";
+  std::getline(std::cin, input);
+  if(input == "yes")
+    hasTailB = true;
+  else if (input == "no")
+    hasTailB = false;
+  else
+  {
+    std::cout << "\nInvalid input, defaulting to 'no'.";
+    hasTailB = false;
+  }
+  std::cout << "\n";
+
+  parentA.setSpecies(speciesA);
+  parentA.setName(nameA);
+  parentA.setAge(ageA);
+  parentA.setHeight(heightA);
+  parentA.setWeight(weightA);
+  parentA.setLikedFoods(likedFoodsA);
+  parentA.setDislikedFoods(dislikedFoodsA);
+  parentA.setNumLegs(numLegsA);
+  parentA.setHasTail(hasTailA);
+
+  parentB.setSpecies(speciesB);
+  parentB.setName(nameB);
+  parentB.setAge(ageB);
+  parentB.setHeight(heightB);
+  parentB.setWeight(weightB);
+  parentB.setLikedFoods(likedFoodsB);
+  parentB.setDislikedFoods(dislikedFoodsB);
+  parentB.setNumLegs(numLegsB);
+  parentB.setHasTail(hasTailB);
+
+  Creature* ptrA = &parentA;
+  Creature* ptrB = &parentB;
+
+  std::string childName;
+  std::cout << "\nLooks like we're just about ready... what would you like the child's name to be?: ";
+  std::getline(std::cin, childName);
+  std::cout << "\n";
+
+  Creature child = makeChild(ptrA, ptrB, childName);
+
   asciiArt();
+
+  std::cout << "\nBelow is the information for both parents, and the child...\n" << std::endl;
+  parentA.display();
+  std::cout << "\n";
+  parentB.display();
+  std::cout << "\n";
+  child.display();
+  std::cout << "\n";
+
 
   return 0;
 }
